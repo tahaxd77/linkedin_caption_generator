@@ -67,7 +67,7 @@ export default function LinkedInCaptionGenerator() {
         <CardHeader>
           <CardTitle className="flex items-center justify-between text-2xl font-bold">
             Project Details
-            <a href="/github" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/tahaxd77/linkedin_caption_generator" target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" size="icon">
                 <Github className="h-5 w-5" />
               </Button>
@@ -205,7 +205,31 @@ export default function LinkedInCaptionGenerator() {
               )}
             </CardContent>
           </Card>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card>
+            <CardContent className="pt-6 text-center">
+              <Github className="w-8 h-8 mx-auto mb-3 text-blue-600" />
+              <h3 className="font-semibold mb-2">GitHub Integration</h3>
+              <p className="text-sm text-gray-600">Automatically extract project details from your GitHub repository</p>
+            </CardContent>
+          </Card>
 
+          <Card>
+            <CardContent className="pt-6 text-center">
+              <Sparkles className="w-8 h-8 mx-auto mb-3 text-blue-600" />
+              <h3 className="font-semibold mb-2">AI-Powered</h3>
+              <p className="text-sm text-gray-600">Generate engaging captions using advanced AI technology</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="pt-6 text-center">
+              <RefreshCw className="w-8 h-8 mx-auto mb-3 text-blue-600" />
+              <h3 className="font-semibold mb-2">Multiple Tones</h3>
+              <p className="text-sm text-gray-600">Choose from professional, friendly, or technical tones</p>
+            </CardContent>
+          </Card>
+        </div>
     </div>
   );
 }
