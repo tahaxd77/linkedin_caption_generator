@@ -31,8 +31,6 @@ interface GeneratedCaption {
 }
 
 export default function LinkedInCaptionGenerator() {
-  const [activeTab, setActiveTab] = useState("generate");
-  const [loading, setLoading] = useState(false);
   const [generatedCaption, setGeneratedCaption] =
     useState<GeneratedCaption | null>(null);
   const [projectData, setProjectData] = useState<ProjectData>({
@@ -47,41 +45,20 @@ export default function LinkedInCaptionGenerator() {
   const [techStackInput, setTechStackInput] = useState("");
   const [githubUrlInput, setGithubUrlInput] = useState("");
 
-  const handleAddTechStack = () => {
-    if (
-      techStackInput.trim() &&
-      techStackInput.includes(techStackInput.trim())
-    ) {
-      setProjectData((prev) => ({
-        ...prev,
-        techStack: [...prev.techStack, techStackInput.trim()],
-      }));
-      setTechStackInput("");
+  const copyToClipboard = () => {
+    if (generatedCaption) {
+      navigator.clipboard.writeText(generatedCaption.caption);
     }
   };
-  const handleRemoveTechStack = (tech: string) => {
-    setProjectData((prev) => {
-      const updatedTechStack = prev.techStack.filter((t) => {
-        tech !== t;
-      });
-      return {
-        ...prev,
-        techStack: updatedTechStack,
-      };
-    });
-  };
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key == "Enter") {
-      e.preventDefault();
-      handleAddTechStack();
-    }
-  };
-  const copyToClipboard = (text: string) => {};
+
   return (
     // Main component for LinkedIn Caption Generator
-    <div className="max-w-3xl mx-auto p-4">
-      <div className="flex items-center justify-center flex-col">
-        <h1 className="text-2xl font-bold mb-2">LinkedIn Caption Generator</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="flex items-center justify-center flex-col text-center">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
+          <Sparkles className="h-8 w-8 text-blue-500" />
+          LinkedIn Caption Generator
+        </h1>
         <h2 className="text-med text-gray-500">
           Generate captions for your LinkedIn posts about your projects using AI{" "}
         </h2>
@@ -130,7 +107,6 @@ export default function LinkedInCaptionGenerator() {
                 <h2 className="text-sm font-semibold">Github Project URL*</h2>
               </div>
               <Input
-                
                 value={githubUrlInput}
                 onChange={(e) => setGithubUrlInput(e.target.value)}
                 className="w-full"
@@ -142,6 +118,7 @@ export default function LinkedInCaptionGenerator() {
                     }));
                   }
                 }}
+                required
               />
               <div className="space-y-2">
                 <h2 className="text-sm font-semibold">Caption Tone</h2>
@@ -158,47 +135,77 @@ export default function LinkedInCaptionGenerator() {
                   <SelectItem value="humorous">Humorous</SelectItem>
                 </SelectContent>
               </Select>
-              <Button type="submit" disabled={isGenerating} className="w-full">
+              <Button
+                type="submit"
+                disabled={isGenerating}
+                className="w-full mt-6"
+              >
                 {isGenerating ? (
-                  <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Generating...
+                  </>
                 ) : (
-                  <RefreshCw className="h-4 w-4 mr-2" />
+                  <>
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Generate Caption
+                  </>
                 )}
-                Generate Caption
               </Button>
             </div>
           </form>
         </CardContent>
       </Card>
-      {generatedCaption && (
-  <Card className="mb-6">
-    <CardHeader>
-      <CardTitle className="flex items-center">
-        <Sparkles className="h-5 w-5 mr-2" />
-        Generated Caption
-      </CardTitle>
-    </CardHeader>
-    <CardContent>
-      <Textarea
-        value={generatedCaption.caption}
-        readOnly
-        className="w-full mb-2 text-medium"
-        rows={6}
-      />
-      <div className="flex items-center">
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => {
-            navigator.clipboard.writeText(generatedCaption.caption);
-          }}
-        >
-          <Copy className="h-4 w-4 mr-1" /> Copy
-        </Button>
-      </div>
-    </CardContent>
-  </Card>
-)}
+     
+      <Card className="h-fit">
+            <CardHeader>
+              <CardTitle>Generated Caption</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {generatedCaption ? (
+                <div className="space-y-4">
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <Badge variant="outline" className="capitalize">
+                        {generatedCaption.tone}
+                      </Badge>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled={isGenerating}
+                        >
+                          {isGenerating ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <RefreshCw className="w-4 h-4" />
+                          )}
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={copyToClipboard}>
+                          <Copy className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">{generatedCaption.caption}</p>
+                  </div>
+
+                  <div className="text-sm text-gray-500">Character count: {generatedCaption.caption.length}/3000</div>
+
+                  <Button onClick={copyToClipboard} className="w-full">
+                    <Copy className="w-4 h-4 mr-2" />
+                    Copy Caption
+                  </Button>
+                </div>
+              ) : (
+                <div className="text-center py-12 text-gray-500">
+                  <Sparkles className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                  <p>Your generated caption will appear here</p>
+                  <p className="text-sm mt-2">Fill in the project details and click "Generate Caption"</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
     </div>
   );
 }
