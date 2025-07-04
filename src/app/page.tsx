@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -15,8 +14,6 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Copy, RefreshCw, Github, Sparkles, Loader2 } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
 
 interface ProjectData {
   title: string;
@@ -42,7 +39,6 @@ export default function LinkedInCaptionGenerator() {
   });
   const [tone, setTone] = useState("professional");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [techStackInput, setTechStackInput] = useState("");
   const [githubUrlInput, setGithubUrlInput] = useState("");
 
   const copyToClipboard = () => {
@@ -98,6 +94,7 @@ export default function LinkedInCaptionGenerator() {
                   caption: 'Failed to generate caption.',
                   tone: tone,
                 });
+                console.error(error);
               }
               setIsGenerating(false);
             }}
@@ -200,7 +197,7 @@ export default function LinkedInCaptionGenerator() {
                 <div className="text-center py-12 text-gray-500">
                   <Sparkles className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                   <p>Your generated caption will appear here</p>
-                  <p className="text-sm mt-2">Fill in the project details and click "Generate Caption"</p>
+                  <p className="text-sm mt-2">Fill in the project details and click Generate Caption</p>
                 </div>
               )}
             </CardContent>
