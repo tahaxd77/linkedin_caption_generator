@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Copy, RefreshCw, Github, Sparkles, Loader2 } from "lucide-react";
+import { Copy, RefreshCw, Github, Sparkles, Loader2, Check } from "lucide-react";
 
 interface ProjectData {
   title: string;
@@ -40,9 +40,11 @@ export default function LinkedInCaptionGenerator() {
   const [tone, setTone] = useState("professional");
   const [isGenerating, setIsGenerating] = useState(false);
   const [githubUrlInput, setGithubUrlInput] = useState("");
+  const [copied,setCopied] = useState(false);
 
   const copyToClipboard = () => {
     if (generatedCaption) {
+      setCopied(true);
       navigator.clipboard.writeText(generatedCaption.caption);
     }
   };
@@ -179,7 +181,11 @@ export default function LinkedInCaptionGenerator() {
                           )}
                         </Button>
                         <Button variant="outline" size="sm" onClick={copyToClipboard}>
-                          <Copy className="w-4 h-4" />
+                          {copied? (
+                            <Check className="w-4 h-4"/>
+                          ):(
+                            <Copy className="w-4 h-4" />
+                          )}
                         </Button>
                       </div>
                     </div>
@@ -187,11 +193,6 @@ export default function LinkedInCaptionGenerator() {
                   </div>
 
                   <div className="text-sm text-gray-500">Character count: {generatedCaption.caption.length}/3000</div>
-
-                  <Button onClick={copyToClipboard} className="w-full">
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy Caption
-                  </Button>
                 </div>
               ) : (
                 <div className="text-center py-12 text-gray-500">

@@ -33,6 +33,10 @@ export async function POST(req: NextRequest) {
 
     // Fetch README from GitHub
     const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+    const readmeRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/readme`);
+    const readmeData = await readmeRes.json();
+    const buff = Buffer.from(readmeData.content, 'base64')
+    const readmeText = buff.toString('utf-8');
     let projectText = '';
     if (repoRes.ok) {
         const repoData = await repoRes.json();
@@ -47,7 +51,11 @@ export async function POST(req: NextRequest) {
         Homepage: ${repoData.homepage || 'N/A'}
         Created at: ${repoData.created_at}
         Last updated: ${repoData.updated_at}
+        Language: ${repoData.language}
+        
       `;
+      console.log(projectText);
+      console.log(readmeText);
       }
     if (!projectText) {
       return NextResponse.json({ error: 'Could not fetch project details from GitHub.' }, { status: 404 });
