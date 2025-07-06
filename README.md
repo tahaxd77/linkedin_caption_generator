@@ -1,4 +1,4 @@
-```
+
 # LinkedIn Caption Generator
 
 A **Next.js web application** that allows users to generate engaging LinkedIn post captions for their projects quickly and easily.
@@ -71,7 +71,7 @@ This project is designed to simplify the process of creating professional and im
 - Modify the caption generation logic or UI by editing the `app/page.tsx` file.
 - The page will auto-update as you make changes.
 
----
+
 
 
 
