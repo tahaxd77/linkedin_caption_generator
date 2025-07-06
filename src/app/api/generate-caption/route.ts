@@ -63,20 +63,26 @@ export async function POST(req: NextRequest) {
     const toneInstruction = getToneInstruction(tone);
     // Construct prompt for Gemini
     const prompt = `You are a LinkedIn content expert. Create an engaging LinkedIn post caption for the following project.
-
+    Link of the project:
+    ${githubUrl}
+    Tone of the caption:
     ${toneInstruction}
     
     Project Information:
     ${projectText}
     
     Requirements:
+    - Examine the project in detail using the Github URL.
+    - Analyze the tools and technologies used in the project.
     - Keep it under 300 words
+    - Tell the significance of the tools and technologies used in it.
     - Make it engaging and professional for LinkedIn
     - Include relevant hashtags (3-5)
     - Highlight key achievements and technical skills
     - Make it shareable and likely to get engagement
     - ${tone === "casual" ? "Include appropriate emojis" : "Use minimal emojis if any"}
     - Focus on the value and impact of the project
+    - Check the ${readmeText} and look if it gives relevant information regarding the project then add it to the caption.
     
     Generate only the caption text, no additional formatting or explanations.
         `;
