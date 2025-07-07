@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Copy, RefreshCw, Github, Sparkles, Loader2, Check } from "lucide-react";
+import { Copy, RefreshCw, Github, Sparkles, Loader2, Check, X } from "lucide-react";
 
 interface ProjectData {
   title: string;
@@ -41,12 +41,37 @@ export default function LinkedInCaptionGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [githubUrlInput, setGithubUrlInput] = useState("");
   const [copied,setCopied] = useState(false);
+  const [editText, setEditText] = useState("");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const copyToClipboard = () => {
     if (generatedCaption) {
       setCopied(true);
       navigator.clipboard.writeText(generatedCaption.caption);
+      setTimeout(() => setCopied(false), 2000);
     }
+  };
+
+  const openEditCaption = () => {
+    if (generatedCaption) {
+      setEditText(generatedCaption.caption);
+      setIsEditModalOpen(true);
+    }
+  };
+
+  const saveEditCaption = () => {
+    if (generatedCaption) {
+      setGeneratedCaption({
+        ...generatedCaption,
+        caption: editText,
+      });
+      setIsEditModalOpen(false);
+    }
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditText("");
   };
 
   return (
@@ -154,9 +179,9 @@ export default function LinkedInCaptionGenerator() {
             </div>
           </form>
         </CardContent>
-      </Card>
+        </Card>
      
-      <Card className="h-fit">
+        <Card className="h-fit">
             <CardHeader>
               <CardTitle>Generated Caption</CardTitle>
             </CardHeader>
@@ -191,8 +216,13 @@ export default function LinkedInCaptionGenerator() {
                     </div>
                     <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">{generatedCaption.caption}</p>
                   </div>
-
-                  <div className="text-sm text-gray-500">Character count: {generatedCaption.caption.length}/3000</div>
+                  
+                  <div className="text-sm text-gray-500 justify-between flex items-center">
+                    Character count: {generatedCaption.caption.length}/3000
+                    <Button onClick={openEditCaption}>
+                      Edit
+                    </Button>
+                    </div>
                 </div>
               ) : (
                 <div className="text-center py-12 text-gray-500">
@@ -228,6 +258,56 @@ export default function LinkedInCaptionGenerator() {
             </CardContent>
           </Card>
         </div>
-    </div>
+
+        {/* Edit Modal */}
+        {isEditModalOpen && (
+          <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+              <div className="flex items-center justify-between p-6 border-b">
+                <h3 className="text-lg font-semibold">Edit Caption</h3>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={closeEditModal}
+                  className="h-8 w-8"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              
+              <div className="p-6">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Caption Text
+                    </label>
+                    <textarea
+                      value={editText}
+                      onChange={(e) => setEditText(e.target.value)}
+                      placeholder="Edit your caption here..."
+                      className="min-h-[200px] w-full resize-none rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">
+                      Character count: {editText.length}/3000
+                    </span>
+                    <div className="flex gap-2">
+                      <Button variant="outline" onClick={closeEditModal}>
+                        Cancel
+                      </Button>
+                      <Button onClick={saveEditCaption}>
+                        Save Changes
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    
   );
 }

@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
     const match = githubUrl.match(/github.com\/(.+?)\/(.+?)(?:$|\/|\?)/);
     if (!match) {
       return NextResponse.json({ error: 'Invalid GitHub URL' }, { status: 400 });
+      
     }
     const owner = match[1];
     const repo = match[2];
