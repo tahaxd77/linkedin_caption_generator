@@ -12,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs,TabsContent,TabsTrigger,TabsList } from "@/components/ui/tabs";
+
 import { Badge } from "@/components/ui/badge";
 import { Copy, RefreshCw, Github, Sparkles, Loader2, Check, X } from "lucide-react";
 
@@ -83,12 +85,18 @@ export default function LinkedInCaptionGenerator() {
           LinkedIn Caption Generator
         </h1>
         <h2 className="text-med text-gray-500">
-          Generate captions for your LinkedIn posts about your projects using AI{" "}
+          Generate captions for your LinkedIn posts about your projects using AI
         </h2>
       </div>
       <Card className="mb-6 mt-6">
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between text-2xl font-bold">
+        <Tabs defaultValue="project-details" className="w-full px-5 mx-auto">
+          <TabsList className="items-center justify-between w-full ">
+            <TabsTrigger value="project-details">Project Details</TabsTrigger>
+            <TabsTrigger value="generated-captions">Generated Caption</TabsTrigger>
+          </TabsList>
+          <TabsContent value="project-details" className="mt-4 w-full">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between text-2xl font-bold">
             Project Details
             <a href="https://github.com/tahaxd77/linkedin_caption_generator" target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" size="icon">
@@ -178,15 +186,13 @@ export default function LinkedInCaptionGenerator() {
               </Button>
             </div>
           </form>
-        </CardContent>
-        </Card>
-     
-        <Card className="h-fit">
+            </CardContent>    
+        <Card className="mt-10 h-fit">
             <CardHeader>
               <CardTitle>Generated Caption</CardTitle>
             </CardHeader>
             <CardContent>
-              {generatedCaption ? (
+              {generatedCaption? (
                 <div className="space-y-4">
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <div className="flex items-center justify-between mb-2">
@@ -233,6 +239,9 @@ export default function LinkedInCaptionGenerator() {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+      </Tabs>
+      </Card>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>
             <CardContent className="pt-6 text-center">
